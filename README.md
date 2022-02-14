@@ -2,13 +2,17 @@
 - Tài liệu này hướng dẫn cài đặt Skyline Dashboard (được tối ưu cho UI và UE) cho OpenSack.
 - Môi trường OpenStack sử dụng trong tài liệu này được triển khai bằng Kolla-Ansible, CSDL là MariaDB.
 # Trước khi bắt đầu 
-- Cần có một môi trường OpenStack chạy các dịch vụ cơ bản ([Hướng dẫn cài OpenStack Sử dụng Kolla-Ansible](google.com))
+- Cần có một môi trường OpenStack chạy các dịch vụ cơ bản ([Hướng dẫn cài OpenStack Sử dụng Kolla-Ansible](https://github.com/1stApr/cai-openstack-tren-virtualbox))
 - Có một máy chủ Linux chạy Docker
 
 # Cài Skyline Dashboard
 ## Tạo và chỉnh sửa file skyline.yaml
 
 ```shell
+mkdir /etc/skyline/
+curl https://raw.githubusercontent.com/1stApr/cai-dashboard-skyline-openstack/master/skyline.yaml -o /etc/skyline/skyline.yaml
+```
+```
 vi /etc/skyline/skyline.yaml
 ```
 **[Mẫu file skyline.yaml](skyline.yaml)**
@@ -54,10 +58,6 @@ mysql -u root -p
 CREATE DATABASE IF NOT EXISTS skyline DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 ```
 
-|Picture1|
-|-----|
-|<img src="https://www.openstack.org/themes/openstack/home_images/Hero/OpenStack_SFAs.svg" width="250"> |
-
 ### Cấp quyền truy cập vào CSDL
 
 ```mysql
@@ -73,15 +73,11 @@ exit
 exit 
 ```
 
-|Picture2|
-|-----|
-|<img src="https://www.openstack.org/themes/openstack/home_images/Hero/OpenStack_SFAs.svg" width="250"> |
-
 ### Tạo skyline user
 
 Source the admin credentials
 ```shell
-source admin-openrc
+source admin-openrc.sh
 ```
 
 Tạo skyline user
@@ -93,9 +89,6 @@ Thêm admin role cho skyline user
 ```shell
 openstack role add --project service --user skyline admin
 ```
-|Picture3|
-|-----|
-|<img src="https://www.openstack.org/themes/openstack/home_images/Hero/OpenStack_SFAs.svg" width="250"> |
 
 ## Chạy Skyline container
 ### Chạy skyline_bootstrap container để bootstrap
@@ -108,10 +101,6 @@ docker run -d --name skyline_bootstrap -e KOLLA_BOOTSTRAP="" -v /etc/skyline/sky
 ```shell
 docker logs skyline_bootstrap
 ```
-|Picture4|
-|-----|
-|<img src="https://www.openstack.org/themes/openstack/home_images/Hero/OpenStack_SFAs.svg" width="250"> |
-
 ###  Chạy skyline service sau khi bootstrap hoàn thành
 
 ```shell
@@ -120,15 +109,8 @@ docker rm -f skyline_bootstrap
 ```shell
 docker run -d --name skyline --restart=always -v /etc/skyline/skyline.yaml:/etc/skyline/skyline.yaml --net=host quay.io/tuanta52/skyline-openstack:latest
 ```
-|Picture5|
-|-----|
-|<img src="https://www.openstack.org/themes/openstack/home_images/Hero/OpenStack_SFAs.svg" width="250"> |
 
 ## Truy cập vào Dashboard
 
-|Picture6|
-|-----|
-|<img src="https://www.openstack.org/themes/openstack/home_images/Hero/OpenStack_SFAs.svg" width="250"> |
-
-
+<img src="/src/image_dashboard.png" width="900"> 
 
