@@ -11,7 +11,7 @@
 ```shell
 vi /etc/skyline/skyline.yaml
 ```
-**[Mẫu file skyline.yaml] (skyline.yaml)**
+**[Mẫu file skyline.yaml](skyline.yaml)**
 
 Các thông số cần chỉnh sửa:
 - database_url
